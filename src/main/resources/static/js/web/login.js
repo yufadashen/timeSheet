@@ -37,13 +37,13 @@ layui.use(['jquery','form','layer'], function(){
                 var data = eval(Data);
                 if(data.code == "0") {
                     layer.msg("登录成功");
-                    setTimeout("window.location.href = \"/jump/index\"",1000);
+                    setTimeout("window.location.href = \"/jump/index\"",100);
                 }else if (data.code == "80001") {
                     layer.msg(data.message);
-                    setTimeout("window.location.href = \"/jump/login\"",1000);
+                    setTimeout("window.location.href = \"/jump/login\"",100);
                 }else if (data.code == "80002") {
                     layer.msg(data.message);
-                    setTimeout("window.location.href = \"/jump/login\"",1000);
+                    setTimeout("window.location.href = \"/jump/login\"",100);
                 }
             }
         });

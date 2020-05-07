@@ -16,7 +16,7 @@ var datas={
 getReports();
 function getReports() {
     $.ajax({
-        url: '/timeSheet/getDetailsMonth',
+        url: '/timeSheet/getDetails',
         dataType: 'json',
         type: 'get',
         data: datas,
@@ -44,7 +44,7 @@ function getReports() {
                 $(".content").html(str)
             }else{
                 $(".content").append(
-                    "<img src=\"../../images/zwsj.png\" style='width:43%;margin-top: 0.9rem;margin-left:0.5rem'>"
+                    "<img src=\"../../images/admin/zwsj.png\" style='width:43%;margin-top: 0.9rem;margin-left:0.5rem'>"
                     +'<div style="width: 100%;text-align: center;font-size:0.36rem;color:#666">暂无数据</div>'
                 );
             }

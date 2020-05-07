@@ -35,6 +35,12 @@
     AND a.sheet_date  between  #{sheetDateStart,jdbcType=VARCHAR}  and  #{sheetDateEnd,jdbcType=VARCHAR}
 
   </select>
+
+  <!--根据id查询有工时日期-->
+  <select id="sheetListsById" resultMap="BaseResultMap">
+SELECT sheet_date FROM `tb_time_sheet` WHERE sys_user_id =  #{id,jdbcType=INTEGER} GROUP BY sheet_date
+
+  </select>
 <!--导出列表-->
   <select id="timeSheetList" resultMap="BaseResultMap" >
     select
@@ -42,6 +48,10 @@
     a.remark,  a.create_time, a.update_time
     from `tb_time_sheet` a LEFT JOIN `tb_sys_user` b  ON a.sys_user_id = b.sys_user_id
     where 1=1
+    <if test="sysUserRealName != null" >
+      and  sys_user_real_name = #{sysUserRealName,jdbcType=VARCHAR}
+    </if>
+    AND sheet_date  between  #{sheetDateStart,jdbcType=VARCHAR}  and  #{sheetDateEnd,jdbcType=VARCHAR}
     limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
   </select>
 
@@ -51,6 +61,10 @@
     count(0)
     from tb_time_sheet
     where 1 = 1
+    <if test="sysUserRealName != null" >
+      and  sys_user_real_name = #{sysUserRealName,jdbcType=VARCHAR}
+    </if>
+    AND sheet_date  between  #{sheetDateStart,jdbcType=VARCHAR}  and  #{sheetDateEnd,jdbcType=VARCHAR}
     limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
   </select>
 
@@ -64,6 +78,26 @@ FROM
 WHERE sys_user_id =  #{sysUserId,jdbcType=VARCHAR} and
 	date_format( sheet_date, '%Y-%m' ) = date_format( #{keys,jdbcType=INTEGER}, '%Y-%m' ) ORDER BY sheet_date DESC
     limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+
+ <!--日详情-->
+  <select id="getDetails"  resultMap="BaseResultMap" >
+   SELECT
+	*
+FROM
+	tb_time_sheet
+WHERE sys_user_id =  #{sysUserId,jdbcType=VARCHAR} and
+	date_format( sheet_date, '%Y-%m-%d' ) = date_format( #{keys,jdbcType=INTEGER}, '%Y-%m-%d' ) ORDER BY sheet_date DESC
+    limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+
+<!--根据id查询-->
+  <select id="viewDetailsById"  resultMap="BaseResultMap" >
+   SELECT
+	*
+FROM
+	tb_time_sheet
+WHERE id =  #{id,jdbcType=INTEGER}
   </select>
 
 

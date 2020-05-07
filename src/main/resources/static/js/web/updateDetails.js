@@ -1,5 +1,10 @@
 var url = window.location.search;
 var key;
+
+var taskId;
+var createTime;
+var projectId;
+var taskCode;
 if (url.indexOf("?") != -1) {
     var str = url.substr(1)
     strs = str.split("&");
@@ -7,12 +12,61 @@ if (url.indexOf("?") != -1) {
         key=strs[i].split("=")[1]
     }
 }
-console.log("key="+key);
-$(".showDatePicker span").text(key);
-var taskId;
-var createTime;
-var projectId;
-var taskCode;
+console.log("id="+key);
+function obtain() {
+
+    var datas={
+        "id":key
+    };
+    $.ajax({
+        type:'get',
+        dataType:'json',
+        data:datas,
+        url:'/timeSheet/viewDetailsById',
+        success:function (json) {
+            if(json.code==0){
+                createTime = json.info.sheetDate;
+                $(".showDatePicker span").text(createTime);
+                projectId=json.info.projectId
+                $(".showPicker span").text(projectId);
+                $("#projectCode").val(json.info.projectCode);
+                taskId = json.info.taskId;
+                taskCode = json.info.taskCode;
+                $(".showPicker2 span").text(taskCode);
+                $("#workTime").val(json.info.workTime);
+                $("#overTime").val(json.info.overTime);
+                $("#remark").val(json.info.remark);
+            }else{
+                alert("获取信息失败")
+            }
+        }
+    })
+}
+
+
+
+function deleteDetails() {
+
+    var datas={
+        "id":key
+    };
+    $.ajax({
+        type:'get',
+        dataType:'json',
+        data:datas,
+        url:'/timeSheet/deleteDetails',
+        success:function (json) {
+            if(json.code==0){
+                alert("删除成功")
+                window.location.href="/jump/index";
+            }else{
+                alert("删除失败")
+            }
+        }
+    })
+}
+obtain();
+
 
 
 
@@ -133,11 +187,12 @@ $('.showPicker2').on('click', function () {
 });
 
 
-function  submitInformation() {
+function  updateDetails() {
     var remark = document.getElementById("remark").value;
     if (remark=="请点击填写") {
         remark="";
     }
+
     var workTime = document.getElementById("workTime").value;
     if (workTime=="请填写数字") {
         workTime=0;
@@ -148,7 +203,8 @@ function  submitInformation() {
     }
 
     var datas={
-        sheetDate:key,
+        id:key,
+        sheetDate:document.getElementById("createTime").value,
         sysUserId:$("#sysUserIds").text(),
         projectId: projectId,
         projectCode: document.getElementById("projectCode").value,
@@ -162,13 +218,13 @@ function  submitInformation() {
         type:'get',
         dataType:'json',
         data:datas,
-        url:'/timeSheet/add',
+        url:'/timeSheet/updateDetailsById',
         success:function (json) {
             if(json.code==0){
-               alert("添加成功")
+               alert("更新成功")
                 window.location.href="/jump/index";
             }else{
-                alert("添加失败")
+                alert("更新失败")
             }
         }
     })

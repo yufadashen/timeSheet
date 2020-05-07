@@ -32,4 +32,12 @@ public class JumpLoginController {
     public String datailsMonth(){
         return "web/detailsMonth";
     }
+    @RequestMapping("/detail")
+    public String detail(){
+        return "web/details";
+    }
+    @RequestMapping("/updateDetails")
+    public String updateDetails(){
+        return "web/updateDetails";
+    }
 }

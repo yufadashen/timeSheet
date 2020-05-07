@@ -3,17 +3,50 @@
  */
 var form;
 var tableIns;
-layui.use('table', function () {
+
+
+layui.use(['table','laydate'], function () {
+    var laydate = layui.laydate;
+    var date = new Date();
+    var dates2 = new Date().getTime()-24*60*60*15*1000;
+    var dates =new Date(parseInt(dates2) );
+    var month = (date.getMonth()+1)>9?(date.getMonth()+1):"0"+(date.getMonth()+1);
+    var month2 = (dates.getMonth()+1)>9?(dates.getMonth()+1):"0"+(dates.getMonth()+1);
+    var day = date.getDate()>9?date.getDate():"0"+date.getDate();
+    var day2 = dates.getDate()>9?dates.getDate():"0"+dates.getDate();
+    var date2 = date.getFullYear()+"-"+month+"-"+day;
+    var dates2 = dates.getFullYear()+"-"+month2+"-"+day2;
+    console.log(date2)
+    console.log(dates2)
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#dates' //指定元素
+        ,range: '&&' //或 range: '~' 来自定义分割字符
+        ,value: ''+dates2+' && '+date2+''
+        ,isInitValue: true //是否允许填充初始值，默认为 true
+    });
+
+
     var table = layui.table;
     form = layui.form;
     //表单初始赋值
     form.val('articleSearch', {});
+    // debugger;
+    // var dates = document.getElementById("dates").value;
+    var sysUserRealName =  document.getElementById("sysUserRealName").value;
+    // var sheetDateStart = dates.split(" && ")[0];
+    // var sheetDateEnd = dates.split(" && ")[1];
     tableIns = table.render({
         elem: '#timeSheetList'
         , page: true //开启分页
         , url: '/timeSheet/selectList'
         , height: 'full-250'
         , method: 'get'
+        ,where:{
+            sysUserRealName:sysUserRealName,
+            sheetDateStart:dates2,
+            sheetDateEnd:date2,
+        }
         , request: {
             pageName: 'pageNo', //页码的参数名称，默认：pageNum
             limitName: 'pageSize' //每页数据量的参数名，默认：pageSize
@@ -25,17 +58,16 @@ layui.use('table', function () {
             dataName: 'list' //数据列表的字段名称，默认：data
         }
         , cols: [[
-            {type: 'numbers', width: '3%'}
-            , {field: 'sheetDate', width: '8%', title: '时间'}
-            , {field: 'sysUserId', width: '5%', title: '用户编号'}
-            , {field: 'sysUserRealName', width: '6%', title: '用户名'}
-            , {field: 'projectId', width: '5%', title: '项目编号'}
-            , {field: 'projectCode', width: '8%', title: '项目名称'}
-            , {field: 'taskCode', width: '30%', title: '工作内容'}
+            {type: 'numbers', width: '4%'}
+            , {field: 'sheetDate', width: '10%', title: '时间'}
+            , {field: 'sysUserId', width: '6%', title: '用户编号'}
+            , {field: 'sysUserRealName', width: '7%', title: '用户名'}
+            , {field: 'projectId', width: '6%', title: '项目编号'}
+            , {field: 'projectCode', width: '10%', title: '项目名称'}
+            , {field: 'taskCode', width: '20%', title: '工作内容'}
             , {field: 'workTime', width: '8%', title: '工时(小时)'}
             , {field: 'overTime', width: '8%', title: '超时时间(小时)'}
-            , {field: 'remark', width: '16%', title: '备注'}
-            , {field: 'barDemo', width: '8%', title: '操作', toolbar: '#barDemo'}
+            , {field: 'remark', width: '20%', title: '备注'}
         ]],
         done: function (res, curr, count) {
 
@@ -61,7 +93,7 @@ layui.use('table', function () {
                getSysuserById(sysUserId);
            }*/
 
-        console("监听行工具事件"+obj);
+        // console("监听行工具事件"+obj);
         var data = obj.data,//获得当前行数据（json格式的键值对）
             layEvent = obj.event, //获得 lay-event 对应的值（编辑、删除、添加）
             editList = []; //存放获取到的那条json数据中的value值（不放key）
@@ -149,7 +181,7 @@ function load(obj) {
         where: obj.field
         , page: {
             pageNo: 1 //从当前页码开始
-            , pageSize: 10
+            , pageSize: 15
         }
     });
 }

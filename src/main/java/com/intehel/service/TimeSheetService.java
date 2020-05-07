@@ -13,7 +13,7 @@ public interface TimeSheetService {
 
     String updateTimeSheet(TimeSheet timeSheet);
 
-    LayUIResult selectList(String sysUserName, int pageNo, int pageSize);
+    LayUIResult selectList(String sysUserRealName,String sheetDateStart,String sheetDateEnd ,int pageNo, int pageSize);
 
     /**
      * 导出表格
@@ -22,4 +22,12 @@ public interface TimeSheetService {
     void exportOutpatientRecord( TimeSheet timeSheet,String sheetDateStart,String sheetDateEnd , HttpServletRequest request, HttpServletResponse response);
 
     String getDetailsMonth(String key,String sysUserId,Integer pageNo,int pageSize);
+
+    String viewDetailsById(String id);
+
+    String updateDetailsById(TimeSheet timeSheet);
+
+    Object getDetails(String key, String sysUserId, Integer pageNo, int pageSize);
+
+    String sheetListsById(int id);
 }

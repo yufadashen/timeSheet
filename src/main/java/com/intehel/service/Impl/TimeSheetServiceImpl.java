@@ -76,9 +76,12 @@ public class TimeSheetServiceImpl implements TimeSheetService {
     }
 
     @Override
-    public LayUIResult selectList(String sysUserName, int pageNo, int pageSize) {
+    public LayUIResult selectList(String sysUserRealName,String sheetDateStart,String sheetDateEnd , int pageNo, int pageSize) {
         try {
 
+            if (StringUtils.isBlank(sysUserRealName)){
+                sysUserRealName=null;
+            }
 
             Integer pageNos = pageNo;
             Integer pageSizes = pageSize;
@@ -89,8 +92,8 @@ public class TimeSheetServiceImpl implements TimeSheetService {
                 pageSize = 10;
             }
             pageNo = (pageNo - 1) * pageSize;
-            List<TimeSheet> timeSheet1 = timeSheetMapper.timeSheetList(sysUserName, pageNo, pageSize);
-            int count = timeSheetMapper.countNum(sysUserName, pageNo, pageSize);
+            List<TimeSheet> timeSheet1 = timeSheetMapper.timeSheetList(sysUserRealName,sheetDateStart,sheetDateEnd, pageNo, pageSize);
+            int count = timeSheetMapper.countNum(sysUserRealName,sheetDateStart,sheetDateEnd, pageNo, pageSize);
             LayUIResult sysUserListResult = new LayUIResult();
             sysUserListResult.setList(timeSheet1);
             sysUserListResult.setTotals(count);
@@ -105,6 +108,11 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 
     @Override
     public void exportOutpatientRecord(TimeSheet timeSheet, String sheetDateStart,String sheetDateEnd ,HttpServletRequest request, HttpServletResponse response) {
+
+
+        if (StringUtils.isBlank(timeSheet.getSysUserRealName())){
+            timeSheet.setSysUserRealName(null);
+        }
 
         List<TimeSheet> List = timeSheetMapper.timeSheetLists(timeSheet.getSysUserRealName(),sheetDateStart,sheetDateEnd);
         //设置表头
@@ -133,8 +141,8 @@ public class TimeSheetServiceImpl implements TimeSheetService {
             aRowMap.put("remark",timeSheet2.getRemark());
             rowDataList.add(aRowMap);
         }
-
-        ExportExcel.exportExcel(titleMap,rowDataList,"TimeSheet-"+timeSheet.getSysUserRealName(),"CRC中心工作日志",request,response);
+        String body =timeSheet.getSysUserRealName()==null?"-all":"-"+timeSheet.getSysUserRealName();
+        ExportExcel.exportExcel(titleMap,rowDataList,"TimeSheet"+body+"_"+sheetDateStart+"～"+sheetDateEnd,"CRC中心工作日志",request,response);
 
     }
 
@@ -156,4 +164,58 @@ public class TimeSheetServiceImpl implements TimeSheetService {
             return Result.error("暂无数据",-1);
         }
     }
+
+    @Override
+    public String viewDetailsById(String id) {
+        TimeSheet timeSheet = timeSheetMapper.viewDetailsById(id);
+        if (timeSheet!=null){
+            return Result.success(timeSheet);
+        }else {
+
+            return Result.error("暂无数据",-1);
+        }
+    }
+
+    @Override
+    public String updateDetailsById(TimeSheet timeSheet) {
+        System.err.println(timeSheet.getId());
+        try {
+            int up = timeSheetMapper.updateTimeSheet(timeSheet);
+            if (up==1){
+                return Result.success();
+            }else {
+                return Result.error("更新数据失败",-1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return Result.error("更新数据异常",-2);
+    }
+
+    @Override
+    public Object getDetails(String key, String sysUserId, Integer pageNo, int pageSize) {
+        Integer pageNos = pageNo;
+        Integer pageSizes = pageSize;
+        if (pageNos == 0) {
+            pageNo = 1;
+        }
+        if (pageSizes == 0) {
+            pageSize = 10;
+        }
+        pageNo = (pageNo - 1) * pageSize;
+        List<TimeSheet> list = timeSheetMapper.getDetails(key,sysUserId,pageNo,pageSize);
+        if (list.size()!=0) {
+            return Result.success(list);
+        }else {
+            return Result.error("暂无数据",-1);
+        }
+    }
+
+    @Override
+    public String sheetListsById(int id) {
+        List list= timeSheetMapper.sheetListsById(id);
+        return Result.success(list);
+    }
+
+
 }
