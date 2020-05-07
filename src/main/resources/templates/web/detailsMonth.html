@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>任务月详情</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="/css/weui.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="/css/reportQuery.css">
+    <link rel="stylesheet" href="/css/barcode.css">
+</head>
+<body  >
+
+<!--个人信息-->
+    <div id="information" th:object="${session.SysUser}">
+        用户号：<span th:text="*{sysUserId}" id="sysUserIds">001</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        姓名：<span th:text="*{sysUserRealName}">余发</span>
+        <!--<span class="sp1">注销</span>-->
+    </div>
+
+
+<div class="content">
+
+</div>
+<!--<script src="../js/adaptation/adaptationFile.js"></script>-->
+<script src="../js/common/jquery.min.js"></script>
+<script src="../js/common/weui.min.js"></script>
+<script src="../js/common/jweixin-1.4.0.js"></script>
+<script src="../js/common/jquery.cookie.js"></script>
+<script src="../js/common/barcode.js"></script>
+<script src="../js/web/reportQuery.js"></script>
+</body>
+</html>

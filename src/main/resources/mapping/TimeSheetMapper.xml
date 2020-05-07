@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intehel.dao.TimeSheetMapper" >
+  <resultMap id="BaseResultMap" type="com.intehel.model.TimeSheet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="sys_user_id" property="sysUserId" jdbcType="INTEGER" />
+    <id column="sys_user_real_name" property="sysUserRealName" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="sheet_date" property="sheetDate" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="task_code" property="taskCode" jdbcType="VARCHAR" />
+    <result column="work_time" property="workTime" jdbcType="DOUBLE" />
+    <result column="over_time" property="overTime" jdbcType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,sys_user_id, sys_user_real_name,project_id,sheet_date, project_code,task_id, task_code, work_time, over_time,
+    remark,  create_time, update_time
+  </sql>
+
+  <!--根据条件查询系统用户列表-->
+  <select id="timeSheetLists" resultMap="BaseResultMap" >
+
+    select
+    a.id,a.sys_user_id, b.sys_user_real_name,a.project_id,a.sheet_date, a.project_code,a.task_id, a.task_code, a.work_time, a.over_time,
+    a.remark,  a.create_time, a.update_time
+    from `tb_time_sheet` a  JOIN tb_sys_user b  ON a.sys_user_id=b.sys_user_id
+    where 1 = 1
+    <if test="sysUserRealName != null" >
+      and  sys_user_real_name = #{sysUserRealName,jdbcType=VARCHAR}
+    </if>
+    AND a.sheet_date  between  #{sheetDateStart,jdbcType=VARCHAR}  and  #{sheetDateEnd,jdbcType=VARCHAR}
+
+  </select>
+<!--导出列表-->
+  <select id="timeSheetList" resultMap="BaseResultMap" >
+    select
+    a.id,a.sys_user_id, b.sys_user_real_name,a.project_id,a.sheet_date, a.project_code,a.task_id, a.task_code, a.work_time, a.over_time,
+    a.remark,  a.create_time, a.update_time
+    from `tb_time_sheet` a LEFT JOIN `tb_sys_user` b  ON a.sys_user_id = b.sys_user_id
+    where 1=1
+    limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+
+ <!--根据条件查询系统用户列表-->
+  <select id="countNum"  resultType="java.lang.Integer" >
+    select
+    count(0)
+    from tb_time_sheet
+    where 1 = 1
+    limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+
+
+ <!--月详情-->
+  <select id="getDetailsMonth"  resultMap="BaseResultMap" >
+   SELECT
+	*
+FROM
+	tb_time_sheet
+WHERE sys_user_id =  #{sysUserId,jdbcType=VARCHAR} and
+	date_format( sheet_date, '%Y-%m' ) = date_format( #{keys,jdbcType=INTEGER}, '%Y-%m' ) ORDER BY sheet_date DESC
+    limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+
+
+
+  <!--根据ID删除工时信息-->
+  <delete id="delById" parameterType="java.lang.Integer" >
+   DELETE FROM tb_time_sheet WHERE id=#{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--新增系统用户-->
+  <insert id="insertSelective" parameterType="com.intehel.model.TimeSheet" >
+    insert into tb_time_sheet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
+      </if>
+      <if test="sheetDate != null" >
+        sheet_date,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="taskCode != null" >
+        task_code,
+      </if>
+
+      <if test="workTime != null" >
+        work_time,
+      </if>
+      <if test="overTime != null" >
+        over_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+     <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetDate != null" >
+        #{sheetDate,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="taskCode != null" >
+        #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null" >
+        #{workTime,jdbcType=DOUBLE},
+      </if>
+      <if test="overTime != null" >
+        #{overTime,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+
+  <!--修改用户信息-->
+  <update id="updateTimeSheet" parameterType="com.intehel.model.TimeSheet" >
+    update tb_time_sheet
+    <set >
+      <if test="id != null" >
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      </if>
+
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCode != null" >
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sheetDate != null" >
+        sheet_date = #{sheetDate,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="taskCode != null" >
+        task_code = #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null" >
+        work_time = #{workTime,jdbcType=DOUBLE},
+      </if>
+      <if test="overTime != null" >
+        over_time = #{overTime,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+</mapper>

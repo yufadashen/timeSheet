@@ -1,0 +1,14 @@
+/*.layui-form-pane .layui-form-label{*/
+    /*border-style:none;*/
+/*}*/
+.layui-form-pane .layui-input-inline {
+    margin-left: 0px;
+}
+.layui-form-item .layui-inline {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+#addSysUser{
+    margin-left: 92%;
+    margin-right: 2% !important;
+}

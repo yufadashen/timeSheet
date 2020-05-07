@@ -1,0 +1,142 @@
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,dl,dd,form,fieldset,legend,input,textarea,select,figure{margin:0;padding:0}
+
+a{text-decoration:none;color: #000}
+em{font-style:normal}
+li{list-style:none}
+img{vertical-align:middle}/*解决图片插入元素下方撑大三个像素的bug*/
+html,body{height:100%;overflow: auto}
+
+* {
+    touch-action: pan-y;
+}
+.page{
+    height: 0.96rem;
+    width: auto;
+    line-height: 0.96rem;
+}
+.time{
+    height:0.8rem;
+    width:auto;
+}
+.datePic{
+    height:0.5rem;
+    margin-top: -0.1rem;
+    margin-left: 0.2rem;
+}
+.all{
+    height: 3.64rem;
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #F3F3F3;
+    font-size: 0.89rem;
+    margin-top: 38px;
+}
+.top ,.bottom,.bottom2{
+    height: 0.75rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.c{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    color:#666;
+}
+.a,.c,.e{
+    margin-left: 0.3rem;
+}
+.b,.d,.f{
+    margin-right: 0.3rem;
+    color:#666;
+}
+span{
+    color: #857171ad;
+}
+.a{
+    color: #0719f1;
+    font-weight: 540;
+    margin-top: -50px;
+    font-size: 1.10rem;
+}
+#startDate{
+    color: #4F64EB;
+    text-decoration: none;
+    font-size: 0.3rem;
+    display: inline-block;
+    width: 1.82rem;
+    height: 0.48rem;
+    background: rgba(79,100,235,0.15);
+    border-radius: 0.5rem;
+    padding-left: 0.13rem;
+}
+#endDate{
+    color: #4F64EB;
+    text-decoration: none;
+    font-size: 0.3rem;
+    display: inline-block;
+    width: 1.82rem;
+    height: 0.48rem;
+    background: rgba(79,100,235,0.15);
+    border-radius: 0.5rem;
+    padding-left: 0.13rem;
+}
+.d a{
+    color: #6CA7E0;
+}
+.content{
+    border-top: 1px solid #f3f3f3;
+}
+.box{
+    display: inline-block;
+    border-radius: 0.3rem;
+    line-height: 0.55rem;
+    color: #3F8FDD;
+    background: #fff;
+    font-size: 16px;
+}
+.content{
+    text-align: center;
+    margin-top: 20px;
+}
+.weui-form-preview__label2 {
+    float: right;
+    margin-right: 1em;
+    min-width: 4em;
+    color:#3F8FDD;
+    text-align: justify;
+    text-align-last: justify;
+}
+.bottom2{
+    margin-top: 17px;
+}
+/*个人信息*/
+
+#information {
+    width: 90%;height: 6%;
+    margin-left: 13%;
+}
+#name{
+    font-size: 0.32rem;
+    color:#000;
+}
+#cardNum{
+    font-size:0.28rem;
+    color: #000;
+}
+
+.contents{
+    margin-left: 0.1rem;
+}
+.weui-form-preview__label1 {
+    float: left;
+    margin-right: 1em;
+    min-width: 4em;
+    color: #999999;
+    text-align: left;
+    text-align-last: left;
+}
+.sp1{
+    margin-left: 30px;
+}

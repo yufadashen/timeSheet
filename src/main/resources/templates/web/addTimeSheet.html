@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加工时</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/web/addTimeSheet.css">
+
+    <link rel="stylesheet" href="/css/weui.css">
+    <link rel="stylesheet" href="/css/weuix.css">
+    <link rel="stylesheet" href="/css/example.css">
+
+
+
+</head>
+<body>
+<div id="heads"  ><h2>三才</h2></div>
+<div id="information" th:object="${session.SysUser}">
+    用户号：<span th:text="*{sysUserId}" id="sysUserIds">001</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    姓名：<span th:text="*{sysUserRealName}">余发</span>
+    <!--<span class="sp1">注销</span>-->
+</div>
+<div style="background: #e6e6e6;width: 100%" >
+
+    <div class="weui-form-preview" style="top: 50px;
+    position: absolute;">
+        <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">日期</label>
+                <a type="button"  class=" showDatePicker weui-form-preview__value"  id="createTime" value="选择日期"><span>选择日期</span></a>
+            </div>
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">项目编号</label>
+                <a type="button"  class=" showPicker weui-form-preview__value" id="projectId" value="点击选择"><span>点击选择</span></a>
+            </div>
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">名称</label>
+                <input type="text" value="请点击填写" onfocus="if (value =='请点击填写'){value =''}" onblur="if (value ==''){value='请点击填写'}"
+                       id="projectCode" style="border:none;text-align: -webkit-right;">
+            </div>
+
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">任务名称</label>
+                <a type="button"  class=" showPicker2 weui-form-preview__value" id="taskCode" value="点击选择"><span>点击选择</span></a>
+            </div>
+
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">工时(小时)</label>
+                <input type="text" value="请填写数字" onfocus="if (value =='请填写数字'){value =''}" onblur="if (value ==''){value='请填写数字'}"
+                           oninput = "value=value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3')"
+                       id="workTime" style="border:none;text-align: -webkit-right;">
+            </div>
+
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">超时时间(小时)</label>
+                <input type="text" value="请填写数字" onfocus="if (value =='请填写数字'){value =''}" onblur="if (value ==''){value='请填写数字'}"
+                           oninput = "value=value.replace(/^(\-)*(\d+)\.(\d).*$/,'$1$2.$3')"
+                       id="overTime" style="border:none;text-align: -webkit-right;">
+            </div>
+
+            <hr/>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">备注</label>
+                <textarea   onfocus="if (value =='请点击填写'){value =''}" onblur="if (value ==''){value='请点击填写'}"
+                           id="remark" class="weui-form-preview__value" style="border:none;text-align: -webkit-right;width: 256px;">请点击填写</textarea>
+            </div>
+        </div>
+        <hr/>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" onclick="submitInformation()">提交</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="/js/common/jquery.min.js"></script>
+<script src="/js/common/jquery.qrcode.min.js"></script>
+<script src="/js/common/jweixin-1.4.0.js"></script>
+<script src="/js/common/zepto.min.js"></script>
+<script src="/js/common/weui.min.js"></script>
+<script src="/js/web/TimeSheet.js"></script>
+</html>

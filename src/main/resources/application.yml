@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    url: jdbc:mysql://39.105.199.116:3306/timesheet?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+#    url: jdbc:mysql://127.0.0.1:3306/timesheet?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+#    password: root
+    password: YuFa@2020
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+ # 修改上传文件大小限制
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  thymeleaf:
+    check-template: false
+    check-template-location: false
+
+
+
+
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+
+mybatis:
+  mapper-locations: classpath*:mapping/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    #打印SQL信息
+    com.intehel.dao: debug
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#Swagger2 调试接口开关 开:true   关:false
+swagger:
+  show: true
+
+systemEnvironment: D:/wechatHospital
+#systemEnvironment: /home/data/wechat/tomcat
+#系统图片存储目录
+imageDir: ${systemEnvironment}/image/
+
+
+
+
+

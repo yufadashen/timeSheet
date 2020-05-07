@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intehel.dao.admin.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.intehel.model.admin.SysRole" >
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="DATE" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_id, is_del, create_time, description, update_time, role_name, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+  <select id="findRole" resultMap="BaseResultMap" parameterType="com.intehel.model.admin.SysRole">
+    select
+    <include refid="Base_Column_List" />
+    from tb_sys_role
+    <where>
+      <if test="roleName!=null and roleName!=''">
+        <bind name="roleName" value="'%'+roleName+'%'"></bind>
+        and role_name like #{roleName}
+      </if>
+      and is_del='0'
+    </where>
+
+  </select>
+  <select id="findRoleByName" resultMap="BaseResultMap" parameterType="com.intehel.model.admin.SysRole">
+    select
+    <include refid="Base_Column_List" />
+    from tb_sys_role
+    where role_name = #{roleName,jdbcType=VARCHAR}
+    and is_del='0'
+  </select>
+  <select id="findRoleCount" resultType="java.lang.Integer" parameterType="com.intehel.model.admin.SysRole">
+    select
+    count(0)
+    from tb_sys_role
+    <where>
+      <if test="roleName!=null and roleName!=''">
+        <bind name="roleName" value="'%'+roleName+'%'"></bind>
+        and role_name like #{roleName}
+      </if>
+      and is_del='0'
+    </where>
+  </select>
+  <select id="selectRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select distinct
+    tb_sys_role.role_id, is_del, create_time, description, update_time, role_name, note
+    from tb_sys_role
+    left join tb_sys_user_role  on tb_sys_role.role_id=tb_sys_user_role.role_id
+    where  tb_sys_user_role.user_id=#{userId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_sys_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteResourceByRoleId" parameterType="java.lang.Integer">
+    delete from tb_sys_role_resource
+    where role_id=#{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="grantResource">
+    insert into tb_sys_role_resource(role_id,resource_id)
+   values
+
+    <foreach collection="list" item="resourceId" separator=",">
+      (#{roleId,jdbcType=INTEGER},
+      #{resourceId,jdbcType=INTEGER})
+    </foreach>
+
+  </insert>
+  <insert id="insert" parameterType="com.intehel.model.admin.SysRole" >
+    insert into tb_sys_role (role_id, is_del, create_time, 
+      description, update_time, role_name, 
+      note)
+    values (#{roleId,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, #{roleName,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.intehel.model.admin.SysRole" >
+    insert into tb_sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+        create_time,
+      <if test="description != null" >
+        description,
+      </if>
+        update_time,
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+        now(),
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+        now(),
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.intehel.model.admin.SysRole" >
+    update tb_sys_role
+    <set>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+        update_time=now(),
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.intehel.model.admin.SysRole" >
+    update tb_sys_role
+    set is_del = #{isDel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=DATE},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+</mapper>

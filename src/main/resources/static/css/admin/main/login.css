@@ -1,0 +1,54 @@
+body,html{
+    height:100%;
+    width: 100%;
+    background: url(/images/admin/main/background.png) no-repeat;
+    overflow: hidden;
+    background-size:cover;
+}
+body{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+.login {
+    box-sizing: border-box;
+    height: 349px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 399px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.layui-form-label {
+    box-sizing: border-box;
+    /* border: 1px solid rgba(255, 255, 255, 0.3); */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px 3px 0px 0px;
+    padding: 0;
+    height: 38px;
+    line-height: 38px;
+}
+.layui-input {
+
+    background-color: rgba(255, 255, 255, 0.2);
+    /* border-radius: 3px; */
+    border: none;
+}
+.layui-btn{
+    width: 273px;
+    margin-top: 13px;
+    border-radius: 3px;
+
+    border: none;
+    color:rgba(255, 255, 255, 0.6);
+}
+.layui-input-block{
+    margin: 0px;
+}
+.layui-icon,.layui-form-label {
+    color: rgba(255, 255, 255, 0.8)
+}
+
+.layui-form-item {
+    margin-bottom: 21px;
+}

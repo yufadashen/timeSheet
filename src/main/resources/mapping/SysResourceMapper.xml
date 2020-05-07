@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intehel.dao.admin.SysResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.intehel.model.admin.SysResource" >
+    <id column="resource_id" property="resourceId" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    resource_id, description, level, parent_id, permission, menu_name, menu_url, sequence, 
+    create_time, update_time, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_resource
+    where resource_id = #{resourceId,jdbcType=INTEGER}
+  </select>
+  <select id="findResourceByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    distinct
+    tb_sys_resource.resource_id, description, level, parent_id, permission, menu_name, menu_url, sequence,
+    create_time, update_time, note
+    from tb_sys_resource
+    left join tb_sys_role_resource on tb_sys_resource.resource_id =tb_sys_role_resource.resource_id
+    left join tb_sys_user_role on tb_sys_role_resource.role_id=tb_sys_user_role.role_id
+    where  tb_sys_user_role.user_id=#{userId}
+  </select>
+  <select id="findAllResource" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_sys_resource
+  </select>
+  <select id="findResourceByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+      tb_sys_resource.resource_id, description, level, parent_id, permission, menu_name, menu_url, sequence,
+    create_time, update_time, note
+    from tb_sys_resource
+    left join tb_sys_role_resource on tb_sys_resource.resource_id =tb_sys_role_resource.resource_id
+    where tb_sys_role_resource.role_id=#{roleId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_sys_resource
+    where resource_id = #{resourceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.intehel.model.admin.SysResource" >
+    insert into tb_sys_resource (resource_id, description, level, 
+      parent_id, permission, menu_name, 
+      menu_url, sequence, create_time, 
+      update_time, note)
+    values (#{resourceId,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{parentId,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR},
+      #{menuUrl,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.intehel.model.admin.SysResource" >
+    insert into tb_sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        resource_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="permission != null" >
+        permission,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="permission != null" >
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.intehel.model.admin.SysResource" >
+    update tb_sys_resource
+    <set >
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="permission != null" >
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where resource_id = #{resourceId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.intehel.model.admin.SysResource" >
+    update tb_sys_resource
+    set description = #{description,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      permission = #{permission,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where resource_id = #{resourceId,jdbcType=INTEGER}
+  </update>
+</mapper>

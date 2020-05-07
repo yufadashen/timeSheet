@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <base th:href="@{/}">
+    <link rel="icon" href="images/admin/logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+    <link rel="stylesheet" href="css/admin/main/login.css">
+    <script src="js/common.js"></script>
+
+
+</head>
+<body>
+<div class="login">
+    <form class="layui-form bg-blue" action="">
+        <div class="layui-form-item margin-top-10">
+            <label class="layui-form-label">用户名
+                <i class="layui-icon">&#xe66f;</i>
+            </label>
+            <div class="layui-input-inline">
+                <!-- //采用inline表示可以继续放 -->
+                <input type="username" name="username" required lay-verify="username" autocomplete="off" class="layui-input"
+                       lay-verType="tips">
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;码
+                <i class="layui-icon"> &#xe672;</i>
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" name="userpassword" required lay-verify="userpassword" autocomplete="off" class="layui-input"
+                       lay-verType="tips">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="login">登录</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="js/common/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/layui/jquery.cookie.js"></script>
+<script src="js/layui/layui.js"></script>
+<script src="js/web/login.js"></script>
+
+</body>
+</html>

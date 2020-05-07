@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>系统用户管理界面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/admin/timesheet/list.css">
+</head>
+<body>
+<!--搜索栏-->
+<form id="userSearch" class="layui-inline layui-form layui-form-pane" method="post" action="" style="margin-top: 5px;" lay-filter="userSearch">
+    <div class="layui-form-item">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-inline">
+                <div class="layui-input-block" style="margin-right:30px;margin-left: 0px;">
+                    <input type="text" placeholder="请输入真实姓名" class="layui-input"  autocomplete="off" id="sysUserRealName" name="sysUserRealName"/>
+                </div>
+            </div>
+        </div>
+<div class="layui-inline">
+            <label class="layui-form-label">时间：</label>
+            <div class="layui-input-inline">
+                <div class="layui-input-block" style="margin-right:30px;margin-left: 0px;">
+                    <input type="text" class="layui-input" id="dates" style="width: 200px;">
+                    <!--<input type="text" placeholder="请输入真实姓名" class="layui-input"  autocomplete="off" id="sysUserRealName" name="sysUserRealName"/>-->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-inline">
+            <button type="reset" class="layui-btn layui-btn-primary">重置查询</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">开始查询</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="excelSubmit">导出数据</button>
+        </div>
+    </div>
+</form>
+<hr class="layui-bg-black"/>
+<!--<button lay-submit="" lay-filter="addSysUser" id="addSysUser" class="layui-btn">新增工时</button>-->
+<!--&lt;!&ndash;<button type="reset" class="layui-btn layui-btn-primary">导出表格</button>&ndash;&gt;-->
+<!--<button class="layui-btn"  lay-submit="" lay-filter="excelSubmit" id="excelSubmit">导出表格</button>-->
+<!--列表展示-->
+<table id="timeSheetList" lay-filter="timeSheetList" class="layui-hide" ></table>
+
+
+
+
+<!--弹出层-->
+<div class="layui-form">
+    <form id="insertSearch" class="layui-form" method="post" action="" style="margin-top: 17px;display: none;" lay-filter="insertSearch" >
+        <div class="layui-form-item" style="text-align: center;">
+
+            <div class="layui-inline" style="display: none">
+                <label class="layui-form-label">编号：</label>
+                <div class="layui-input-inline">
+                    <div class="layui-input-block" style="margin-right:30px;margin-left: 0px;">
+                        <input type="text" placeholder="" lay-verify="sysUserId" class="layui-input"  autocomplete="off" id="sysUserIds" name="sysUserId"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-inline" id="usernamediv">
+                <label class="layui-form-label">用户名：<span id="redSpan" style="color:red">*</span></label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入用户名" onkeyup="this.value=this.value.replace(/\s+/g,'')" lay-verify="sysUserName" class="layui-input"  autocomplete="off" id="sysUserNames" name="sysUserName"/>
+                </div>
+
+            </div>
+
+            <div id="pass" class="layui-inline">
+                <label class="layui-form-label">密码：<span id="redSpan1" style="color:red">*</span></label>
+                <div class="layui-input-inline">
+                    <input type="password" lay-verify="sysUserPassword" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入密码(范围6~20位)" class="layui-input"  autocomplete="off" id="sysUserPassword" name="sysUserPassword"/>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">真实姓名：</label>
+                <div class="layui-input-inline">
+                    <input type="text" placeholder="请输入真实姓名" onkeyup="this.value=this.value.replace(/\s+/g,'')" lay-verify="sysUserRealName" class="layui-input"  autocomplete="off" id="sysUserRealNames" name="sysUserRealName"/>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式：</label>
+                <div class="layui-input-inline">
+                    <input type="tel" onkeyup="this.value=this.value.replace(/\s+/g,'')" maxlength="11" placeholder="请输入联系方式" lay-verify="sysUserTel" class="layui-input"  autocomplete="off" id="sysUserTels" name="sysUserTel"/>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script src="/js/common/jquery.min.js"></script>
+<script src="/js/layui/layui.js"></script>
+
+<script src="/js/admin/usermanage/sysusermanageselect.js"></script>
+<script src="/js/admin/timesheet/excel.js"></script>
+<script src="/js/admin/timesheet/list.js"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit" id="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" id="del" lay-event="del">删除</a>
+</script>
+<script>
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        var date = new Date();
+        var dates2 = new Date().getTime()-24*60*60*15*1000;
+        var dates =new Date(parseInt(dates2) );
+        var month = (date.getMonth()+1)>9?(date.getMonth()+1):"0"+(date.getMonth()+1);
+        var month2 = (dates.getMonth()+1)>9?(dates.getMonth()+1):"0"+(dates.getMonth()+1);
+        var day = date.getDate()>9?date.getDate():"0"+date.getDate();
+        var day2 = dates.getDate()>9?dates.getDate():"0"+dates.getDate();
+        var date2 = date.getFullYear()+"-"+month+"-"+day;
+        var dates2 = dates.getFullYear()+"-"+month2+"-"+day2;
+        console.log(date2)
+        console.log(dates2)
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#dates' //指定元素
+            ,range: '&&' //或 range: '~' 来自定义分割字符
+            ,value: ''+dates2+' && '+date2+''
+            ,isInitValue: true //是否允许填充初始值，默认为 true
+        });
+    });
+</script>
+</body>
+</html>
